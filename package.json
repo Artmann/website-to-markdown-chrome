@@ -1,7 +1,20 @@
 {
   "name": "website-to-markdown-chrome",
-  "private": true,
   "version": "1.0.0",
+  "description": "A Chrome extension that converts web pages to Markdown format.",
+  "author": "Christoffer Artmann <artgaard@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "blazing-fast",
+    "chrome-extension",
+    "converter",
+    "html",
+    "markdown",
+    "shadcn-ui",
+    "tailwindcss",
+    "typescript"
+  ],
+  "private": true,
   "type": "module",
   "scripts": {
     "build": "tsc -b && vite build",
