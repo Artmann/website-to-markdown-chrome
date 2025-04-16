@@ -3,10 +3,14 @@ import { useCallback, useEffect, useState, type ReactElement } from 'react'
 import { Checkbox } from './components/ui/checkbox'
 import { Textarea } from './components/ui/textarea'
 import { fetchMarkdownFromWebsite } from './markdown'
+import { cn } from './lib/utils'
+import { CircleAlert, Loader } from 'lucide-react'
 
 export function App(): ReactElement {
   const [markdown, setMarkdown] = useState('')
   const [url, setUrl] = useState<string>()
+  const [isFetching, setIsFetching] = useState(false)
+  const [error, setError] = useState<string>()
 
   const [includeTitle, setIncludeTitle] = useState(true)
   const [includeLinks, setIncludeLinks] = useState(true)
@@ -40,6 +44,9 @@ export function App(): ReactElement {
         return
       }
 
+      setError(undefined)
+      setIsFetching(true)
+
       fetchMarkdownFromWebsite(url, {
         clean: cleanContent,
         includeLinks,
@@ -52,6 +59,11 @@ export function App(): ReactElement {
         })
         .catch((error) => {
           console.error('Error fetching markdown:', error)
+
+          setError(error.message)
+        })
+        .finally(() => {
+          setIsFetching(false)
         })
     },
     [cleanContent, includeLinks, includeTitle, url]
@@ -76,11 +88,13 @@ export function App(): ReactElement {
 
   return (
     <div
-      className="flex flex-col gap-4 p-4"
+      className="flex flex-col gap-4 p-4 text-gray-700"
       style={{ width: 'calc(24rem + 2rem)' }}
     >
       <div className="flex flex-col gap-2">
-        <h2 className="text-sm font-semibold">Website as Markdown</h2>
+        <h2 className="text-sm font-semibold text-black">
+          Website as Markdown
+        </h2>
 
         <div className="flex gap-4 items-center">
           <div className="text-sm flex items-center gap-2">
@@ -120,9 +134,23 @@ export function App(): ReactElement {
 
       <div className="">
         <Textarea
-          className="w-[24rem] h-[32rem] text-xs"
+          className="w-[24rem] h-[28rem] text-xs"
           value={markdown}
         />
+      </div>
+
+      <div className={cn(error ? 'text-red-700' : 'text-gray-700', 'text-xs')}>
+        {error ? (
+          <div className="w-full h-full flex items-center gap-2">
+            <CircleAlert className="size-3" /> <span>{error}</span>
+          </div>
+        ) : isFetching ? (
+          <div className="w-full h-full flex items-center gap-2">
+            <Loader className="size-3" /> <span>Fetching content</span>
+          </div>
+        ) : (
+          ' '
+        )}
       </div>
     </div>
   )
