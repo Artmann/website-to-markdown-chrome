@@ -1,62 +1,77 @@
-# React + TypeScript + Vite
+# Website to Markdown - Chrome Extension
 
-This template provides a minimal setup to get React working in Vite with HMR and
-some ESLint rules.
+A Chrome extension that converts web pages to Markdown format with customizable options.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md)
-  uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
-  uses [SWC](https://swc.rs/) for Fast Refresh
+- Convert any web page to clean Markdown
+- Customize conversion options:
+  - Include/exclude page title
+  - Include/exclude links
+  - Clean up content for better readability
+- Copy Markdown to clipboard with one click
+- Simple, responsive UI
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the
-configuration to enable type-aware lint rules:
+1. Clone this repository
+2. Install dependencies:
+   ```
+   bun install
+   ```
+3. Build the extension:
+   ```
+   bun run build
+   ```
+4. Load the extension in Chrome:
+   - Open Chrome and navigate to `chrome://extensions`
+   - Enable "Developer mode"
+   - Click "Load unpacked" and select the `dist` directory
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname
-    }
-  }
-})
+## Development
+
+Start the development server:
+```
+bun dev
 ```
 
-You can also install
-[eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x)
-and
-[eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom)
-for React-specific lint rules:
+### Commands
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `bun dev` - Start development server
+- `bun run build` - Build for production
+- `bun lint` - Run ESLint checks
+- `bun format` - Format code with Prettier
+- `bun preview` - Preview production build
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules
-  }
-})
-```
+## Contributing
+
+Contributions are welcome! Here's how to contribute:
+
+1. Fork the repository
+2. Create your feature branch:
+   ```
+   git checkout -b feature/my-new-feature
+   ```
+3. Make your changes and ensure tests and linting pass:
+   ```
+   bun lint
+   bun run build
+   ```
+4. Commit your changes
+5. Push to your branch:
+   ```
+   git push origin feature/my-new-feature
+   ```
+6. Create a Pull Request
+
+## Tech Stack
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Chrome Extension API
+
+## License
+
+[MIT License](LICENSE)
