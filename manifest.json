@@ -1,0 +1,10 @@
+{
+  "name": "Website to Markdown",
+  "description": "A Chrome extension to convert web pages to Markdown",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "dist/index.html",
+    "default_icon": "public/vite.svg"
+  }
+}
