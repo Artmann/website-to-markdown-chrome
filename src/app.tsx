@@ -109,7 +109,7 @@ export function App(): ReactElement {
       <Toaster />
 
       <div className="flex flex-col gap-2">
-        <h2 className="text-sm font-semibold text-black">
+        <h2 className="text-base font-semibold text-black">
           Website as Markdown
         </h2>
 
