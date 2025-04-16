@@ -1,7 +1,7 @@
 interface FetchMarkdownOptions {
-  includeTitle?: boolean
-  includeLinks?: boolean
   clean?: boolean
+  includeLinks?: boolean
+  includeTitle?: boolean
 }
 
 export async function fetchMarkdownFromWebsite(targetUrl: string, options: FetchMarkdownOptions = {}): Promise<string> {
@@ -10,17 +10,9 @@ export async function fetchMarkdownFromWebsite(targetUrl: string, options: Fetch
 
   params.append('url', targetUrl)
 
-  if (options.includeTitle) {
-    params.append('title', 'true')
-  }
-
-  if (options.includeLinks) {
-    params.append('links', 'true')
-  }
-
-  if (options.clean) {
-    params.append('clean', 'true')
-  }
+  params.append('clean', options.clean ? 'true' : 'false')
+  params.append('links', options.includeLinks ? 'true' : 'false')
+  params.append('title', options.includeTitle ? 'true' : 'false')
 
   const url = `${baseUrl}?${params.toString()}`
 

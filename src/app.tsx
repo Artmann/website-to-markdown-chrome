@@ -1,11 +1,16 @@
 import { useCallback, useEffect, useState, type ReactElement } from 'react'
 
-import { fetchMarkdownFromWebsite } from './markdown'
+import { Checkbox } from './components/ui/checkbox'
 import { Textarea } from './components/ui/textarea'
+import { fetchMarkdownFromWebsite } from './markdown'
 
 export function App(): ReactElement {
   const [markdown, setMarkdown] = useState('')
   const [url, setUrl] = useState<string>()
+
+  const [includeTitle, setIncludeTitle] = useState(true)
+  const [includeLinks, setIncludeLinks] = useState(true)
+  const [cleanContent, setCleanContent] = useState(true)
 
   const updateUrl = useCallback(() => {
     chrome.tabs.query(
@@ -35,7 +40,11 @@ export function App(): ReactElement {
         return
       }
 
-      fetchMarkdownFromWebsite(url)
+      fetchMarkdownFromWebsite(url, {
+        clean: cleanContent,
+        includeLinks,
+        includeTitle
+      })
         .then((newMarkdown) => {
           console.log('Markdown fetched:', newMarkdown)
 
@@ -45,7 +54,7 @@ export function App(): ReactElement {
           console.error('Error fetching markdown:', error)
         })
     },
-    [url]
+    [cleanContent, includeLinks, includeTitle, url]
   )
 
   useEffect(
@@ -70,11 +79,48 @@ export function App(): ReactElement {
       className="flex flex-col gap-4 p-4"
       style={{ width: 'calc(24rem + 2rem)' }}
     >
-      <h2 className="text-sm font-semibold">Website as Markdown</h2>
+      <div className="flex flex-col gap-2">
+        <h2 className="text-sm font-semibold">Website as Markdown</h2>
 
-      <div className="text-xs">
+        <div className="flex gap-4 items-center">
+          <div className="text-sm flex items-center gap-2">
+            <Checkbox
+              checked={includeTitle}
+              id="title"
+              onCheckedChange={(checked) => {
+                setIncludeTitle(Boolean(checked))
+              }}
+            />
+            <label htmlFor="title">Title</label>
+          </div>
+
+          <div className="text-sm flex items-center gap-2">
+            <Checkbox
+              checked={includeLinks}
+              id="links"
+              onCheckedChange={(checked) => {
+                setIncludeLinks(Boolean(checked))
+              }}
+            />
+            <label htmlFor="links">Links</label>
+          </div>
+
+          <div className="text-sm flex items-center gap-2">
+            <Checkbox
+              checked={cleanContent}
+              id="clean"
+              onCheckedChange={(checked) => {
+                setCleanContent(Boolean(checked))
+              }}
+            />
+            <label htmlFor="clean">Clean</label>
+          </div>
+        </div>
+      </div>
+
+      <div className="">
         <Textarea
-          className="w-[24rem] h-[32rem]"
+          className="w-[24rem] h-[32rem] text-xs"
           value={markdown}
         />
       </div>
