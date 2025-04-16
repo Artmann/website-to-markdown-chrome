@@ -1,10 +1,13 @@
+import { CircleAlert, Copy, Loader } from 'lucide-react'
 import { useCallback, useEffect, useState, type ReactElement } from 'react'
 
+import { Button } from './components/ui/button'
 import { Checkbox } from './components/ui/checkbox'
 import { Textarea } from './components/ui/textarea'
-import { fetchMarkdownFromWebsite } from './markdown'
 import { cn } from './lib/utils'
-import { CircleAlert, Loader } from 'lucide-react'
+import { fetchMarkdownFromWebsite } from './markdown'
+import { Toaster } from './components/ui/sonner'
+import { toast } from 'sonner'
 
 export function App(): ReactElement {
   const [markdown, setMarkdown] = useState('')
@@ -35,6 +38,18 @@ export function App(): ReactElement {
       }
     )
   }, [])
+
+  const handleCopy = useCallback(() => {
+    if (!markdown) {
+      return
+    }
+
+    navigator.clipboard.writeText(markdown).then(() => {
+      console.log('Markdown copied to clipboard')
+
+      toast('Markdown copied to clipboard')
+    })
+  }, [markdown])
 
   useEffect(
     function fetchMarkdownOnUrlChange() {
@@ -91,6 +106,8 @@ export function App(): ReactElement {
       className="flex flex-col gap-4 p-4 text-gray-700"
       style={{ width: 'calc(24rem + 2rem)' }}
     >
+      <Toaster />
+
       <div className="flex flex-col gap-2">
         <h2 className="text-sm font-semibold text-black">
           Website as Markdown
@@ -132,7 +149,15 @@ export function App(): ReactElement {
         </div>
       </div>
 
-      <div className="">
+      <div className="relative">
+        <Button
+          className="absolute top-2 right-2 z-10 cursor-pointer"
+          size="icon"
+          variant="outline"
+          onClick={handleCopy}
+        >
+          <Copy className="size-3 text-gray-500" />
+        </Button>
         <Textarea
           className="w-[24rem] h-[28rem] text-xs"
           value={markdown}
