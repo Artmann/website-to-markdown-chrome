@@ -114,7 +114,7 @@ export function App(): ReactElement {
         </h2>
 
         <div className="flex gap-4 items-center">
-          <div className="text-sm flex items-center gap-2">
+          <div className="text-xs flex items-center gap-2">
             <Checkbox
               checked={includeTitle}
               id="title"
@@ -125,7 +125,7 @@ export function App(): ReactElement {
             <label htmlFor="title">Title</label>
           </div>
 
-          <div className="text-sm flex items-center gap-2">
+          <div className="text-xs flex items-center gap-2">
             <Checkbox
               checked={includeLinks}
               id="links"
@@ -136,7 +136,7 @@ export function App(): ReactElement {
             <label htmlFor="links">Links</label>
           </div>
 
-          <div className="text-sm flex items-center gap-2">
+          <div className="text-xs flex items-center gap-2">
             <Checkbox
               checked={cleanContent}
               id="clean"
