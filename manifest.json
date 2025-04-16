@@ -6,5 +6,6 @@
   "action": {
     "default_popup": "dist/index.html",
     "default_icon": "public/vite.svg"
-  }
+  },
+  "permissions": ["tabs"]
 }
