@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react'
 
 export function App(): ReactElement {
-  return <div>Hello world</div>
+  return <div className="bg-red-200">Hello world</div>
 }
