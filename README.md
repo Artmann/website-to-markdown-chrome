@@ -1,6 +1,7 @@
 # Website to Markdown - Chrome Extension
 
-A Chrome extension that converts web pages to Markdown format with customizable options.
+A Chrome extension that converts web pages to Markdown format with customizable
+options.
 
 ## Features
 
@@ -31,6 +32,7 @@ A Chrome extension that converts web pages to Markdown format with customizable 
 ## Development
 
 Start the development server:
+
 ```
 bun dev
 ```

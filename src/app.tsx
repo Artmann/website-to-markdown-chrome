@@ -1,4 +1,4 @@
-import { CircleAlert, Copy, Loader } from 'lucide-react'
+import { CircleAlert, Copy, Download, Loader } from 'lucide-react'
 import { useCallback, useEffect, useState, type ReactElement } from 'react'
 
 import { Button } from './components/ui/button'
@@ -50,6 +50,49 @@ export function App(): ReactElement {
       toast('Markdown copied to clipboard')
     })
   }, [markdown])
+
+  const handleDownload = useCallback(() => {
+    if (!markdown) {
+      return
+    }
+
+    let filename = 'content.md'
+
+    if (url) {
+      try {
+        const urlObj = new URL(url)
+        const pathname = urlObj.pathname
+        const lastSegment = pathname.split('/').filter(Boolean).pop()
+
+        if (lastSegment && lastSegment !== '') {
+          // Remove any file extensions and clean up the filename
+          const cleanName = lastSegment
+            .replace(/\.[^/.]+$/, '') // Remove file extension
+            .replace(/[^a-zA-Z0-9-]/g, '-') // Replace non-alphanumeric chars with dashes
+            .replace(/-+/g, '-') // Replace multiple dashes with single dash
+            .replace(/^-|-$/g, '') // Remove leading/trailing dashes
+
+          if (cleanName) {
+            filename = `${cleanName}.md`
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to generate filename from URL:', error)
+      }
+    }
+
+    const blob = new Blob([markdown], { type: 'text/markdown' })
+    const blobUrl = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = blobUrl
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(blobUrl)
+
+    toast('Markdown downloaded')
+  }, [markdown, url])
 
   useEffect(
     function fetchMarkdownOnUrlChange() {
@@ -150,14 +193,24 @@ export function App(): ReactElement {
       </div>
 
       <div className="relative">
-        <Button
-          className="absolute top-2 right-2 z-10 cursor-pointer"
-          size="icon"
-          variant="outline"
-          onClick={handleCopy}
-        >
-          <Copy className="size-3 text-gray-500" />
-        </Button>
+        <div className="absolute top-2 right-2 z-10 flex gap-2">
+          <Button
+            className="cursor-pointer"
+            size="icon"
+            variant="outline"
+            onClick={handleDownload}
+          >
+            <Download className="size-3 text-gray-500" />
+          </Button>
+          <Button
+            className="cursor-pointer"
+            size="icon"
+            variant="outline"
+            onClick={handleCopy}
+          >
+            <Copy className="size-3 text-gray-500" />
+          </Button>
+        </div>
         <Textarea
           className="w-[24rem] h-[28rem] text-xs"
           value={markdown}

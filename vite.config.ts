@@ -15,7 +15,7 @@ export default defineConfig({
         assetFileNames: '[name].[ext]'
       },
       input: {
-        main: resolve(__dirname, 'index.html'),
+        main: resolve(__dirname, 'index.html')
       }
     }
   },
