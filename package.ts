@@ -48,7 +48,6 @@ try {
 
   console.log(`✅ Package created: ${ZIP_NAME}`)
   console.log(`📊 Ready for Chrome Web Store upload!`)
-
 } catch (error) {
   console.error('❌ Packaging failed:', error)
   process.exit(1)
