@@ -4,36 +4,42 @@ interface FetchMarkdownOptions {
   includeTitle?: boolean
 }
 
+const API_BASE_URL =
+  'https://website-to-markdown-serverless.artgaard.workers.dev'
+
 export async function fetchMarkdownFromWebsite(
   targetUrl: string,
   options: FetchMarkdownOptions = {}
 ): Promise<string> {
-  const devBaseUrl =
-    'https://tbev3n4g6gnq6hqjlqaatndr3u0pgxij.lambda-url.us-east-1.on.aws'
-  const prodBaseUrl =
-    'https://52ebc42gkz64z7nffzsuliusri0qzaxm.lambda-url.us-east-1.on.aws'
-  const baseUrl =
-    process.env.NODE_ENV === 'production' ? prodBaseUrl : devBaseUrl
-
   const params = new URLSearchParams()
 
   params.append('url', targetUrl)
-
   params.append('cleanContent', options.clean ? 'true' : 'false')
   params.append('removeLinks', options.includeLinks ? 'false' : 'true')
   params.append('includeTitle', options.includeTitle ? 'true' : 'false')
 
-  const url = `${baseUrl}?${params.toString()}`
+  const url = `${API_BASE_URL}?${params.toString()}`
 
   const response = await fetch(url)
 
-  const markdown = await response.text()
-
   if (!response.ok) {
+    const detail = await readErrorDetail(response)
     throw new Error(
-      `Failed to fetch the website content. ${response.status}: ${response.statusText}.`
+      `Failed to fetch the website content. ${response.status}: ${detail}.`
     )
   }
 
-  return markdown
+  return await response.text()
+}
+
+async function readErrorDetail(response: Response): Promise<string> {
+  try {
+    const body = (await response.json()) as { error?: string }
+    if (body.error) {
+      return body.error
+    }
+  } catch {
+    // Body wasn't JSON; fall through to statusText.
+  }
+  return response.statusText
 }
